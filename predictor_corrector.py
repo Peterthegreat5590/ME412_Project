@@ -77,10 +77,13 @@ def solve(u, v, p, u_mask, v_mask, p_mask, dt, dx, dy, nu, X_p, Y_p, X_u, Y_u, X
 
         
 
-        if np.isclose(t%(50*dt),0):
+        if np.isclose(t%(1000*dt),0):
             np.savetxt(f"u_Time={t}.csv", u, '%0.5f', ',','\n')
             np.savetxt(f"v_Time={t}.csv", v, '%0.5f', ',','\n')
             np.savetxt(f"p_Time={t}.csv", p, '%0.5f', ',','\n')
 
+    np.savetxt(f"u_Time={t}.csv", u, '%0.5f', ',','\n')
+    np.savetxt(f"v_Time={t}.csv", v, '%0.5f', ',','\n')
+    np.savetxt(f"p_Time={t}.csv", p, '%0.5f', ',','\n')
 
 
