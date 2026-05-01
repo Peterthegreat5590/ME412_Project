@@ -66,5 +66,12 @@ u, v, p = enforce_boundary(u, v, p, domain_u, domain_v, domain_p, X_p, Y_p, X_u,
 
 np.set_printoptions(threshold=100000)
 
+np.savetxt("X_p.csv",X_p,'%0.5f',',','\n')
+np.savetxt("Y_p.csv",Y_p,'%0.5f',',','\n')
+np.savetxt("X_u.csv",X_u,'%0.5f',',','\n')
+np.savetxt("Y_u.csv",Y_u,'%0.5f',',','\n')
+np.savetxt("X_v.csv",X_v,'%0.5f',',','\n')
+np.savetxt("Y_v.csv",Y_v,'%0.5f',',','\n')
+
 solve(u, v, p, domain_u, domain_v, domain_p, dt, dx, dy, nu, X_p, Y_p, X_u, Y_u, X_v, Y_v, L, D, Vin, time)
 

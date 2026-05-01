@@ -18,40 +18,44 @@ def solve(u, v, p, u_mask, v_mask, p_mask, dt, dx, dy, nu, X_p, Y_p, X_u, Y_u, X
         uW = u[1:-1,:-2]
         uN = u[2:,1:-1]
         uS = u[:-2,1:-1]
-
-        ue = (uE+uP)/2
-        uw = (uW+uP)/2
-        un = (uN+uP)/2
-        us = (uS+uP)/2
-
-        vn = (v[1:-1,1:-1]+v[1:-1,2:])/2
-        vs = (v[:-2,1:-1]+v[:-2,2:])/2
-
-        u_conv = np.maximum(-ue,0)*dy*ue + np.maximum(uw,0)*dy*uw + np.maximum(-vn,0)*dx*un + np.maximum(vs,0)*dx*us #Negative already applied by signs, Upwinding Scheme Used
-
-        u_diff = nu*(uE+uW+uN+uS-4*uP)
-
-        u_star[1:-1,1:-1] = uP + dt/(dx*dy)*(u_conv+u_diff)
+        uNW = u[2:,:-2]
 
         vP = v[1:-1,1:-1]
         vE = v[1:-1,2:]
         vW = v[1:-1,:-2]
         vN = v[2:,1:-1]
         vS = v[:-2,1:-1]
+        vSE = v[:-2,2:]
 
-        ve = (vE+vP)/2
-        vw = (vW+vP)/2
+        ue = (uE+uP)/2
+        uw = (uW+uP)/2
+
+        vn_u = (vP+vE)/2
+        vs_u = (vS+vSE)/2
+
+        a_uE = nu + np.maximum(-ue*dy,0)
+        a_uW = nu + np.maximum(uw*dy,0)
+        a_uN = nu + np.maximum(-vn_u*dx,0)
+        a_uS = nu + np.maximum(vs_u*dx,0)
+        a_uP = a_uE + a_uW + a_uN + a_uS + (ue*dy - uw*dy) + (vn_u*dx - vs_u*dx)
+
+        u_star[1:-1,1:-1] = (a_uE*uE + a_uW*uW + a_uN*uN + a_uS*uS)/a_uP
+
+
+
         vn = (vN+vP)/2
         vs = (vS+vP)/2
 
-        ue = (u[1:-1,1:-1]+u[2:,1:-1])/2
-        uw = (u[1:-1,:-2]+u[2:,:-2])/2
+        ue_v = (uP+uN)/2
+        uw_v = (uW+uNW)/2
 
-        v_conv = np.maximum(-ue,0)*dy*ve + np.maximum(uw,0)*dy*vw + np.maximum(-vn,0)*dx*vn + np.maximum(vs,0)*dx*vs #Negative already applied by signs, Upwinding Scheme Used
+        a_vE = nu + np.maximum(-ue_v*dy,0)
+        a_vW = nu + np.maximum(uw_v*dy,0)
+        a_vN = nu + np.maximum(-vn*dx,0)
+        a_vS = nu + np.maximum(vs*dx,0)
+        a_vP = a_vE + a_vW + a_vN + a_vS + (ue_v*dy - uw_v*dy) + (vn*dx - vs*dx)
 
-        v_diff = nu*(vE+vW+vN+vS-4*vP)
-
-        v_star[1:-1,1:-1] = vP + dt/(dx*dy)*(v_conv+v_diff)
+        v_star[1:-1,1:-1] = (a_vE*vE + a_vW*vW + a_vN*vN + a_vS*vS)/a_vP
 
         u_star, v_star, _ = enforce_boundary(u_star, v_star, p, u_mask, v_mask, p_mask, X_p, Y_p, X_u, Y_u, X_v, Y_v, L, D, Vin)
 
@@ -73,7 +77,7 @@ def solve(u, v, p, u_mask, v_mask, p_mask, dt, dx, dy, nu, X_p, Y_p, X_u, Y_u, X
 
         
 
-        if np.isclose(t%(100*dt),0):
+        if np.isclose(t%(50*dt),0):
             np.savetxt(f"u_Time={t}.csv", u, '%0.5f', ',','\n')
             np.savetxt(f"v_Time={t}.csv", v, '%0.5f', ',','\n')
             np.savetxt(f"p_Time={t}.csv", p, '%0.5f', ',','\n')
