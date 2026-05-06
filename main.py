@@ -56,7 +56,7 @@ domain_u[((X_u>D)&(X_u<(W-D))&(Y_u>D))|(X_u>W+dx)] = False
 domain_v = np.ones([Ny+2, Nx+2],bool)
 domain_v[((X_v>D)&(X_v<(W-D))&(Y_v>D))|(Y_v>H+dy)] = False
 
-Vin = 2
+Vin = 50
 
 nu = 1
 
