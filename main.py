@@ -9,9 +9,9 @@ inputs = sys.argv
 if len(inputs)>4:
     raise ValueError("Invalid input")
 elif len(inputs)<4:
-    dx = 1/8
-    dy = 1/8
-    dt = 1/1000
+    dx = 1/16
+    dy = 1/16
+    dt = 1/10000
     t_max = 5
 elif "/" in sys.argv:
     dx = float(eval(sys.argv[1]))
