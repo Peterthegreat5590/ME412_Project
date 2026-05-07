@@ -41,7 +41,7 @@ def enforce_boundary(u, v, p, u_mask, v_mask, p_mask, X_p, Y_p, X_u, Y_u, X_v, Y
 
     p[(Y_p==D+L+dy/2)&(X_p>0)&(X_p<D)] = p[(Y_p==D+L-dy/2)&(X_p>0)&(X_p<D)]
 
-    v[(Y_v==D+L+dy/2)&(X_v>L-D)&(X_v<L)] = v[(Y_v==D+L-3*dy/2)&(X_v>L-D)&(X_v<L)]
+    v[(Y_v==D+L)&(X_v>L-D)&(X_v<L)] = v[(Y_v==D+L-dy)&(X_v>L-D)&(X_v<L)]
     u[(Y_u==D+L+dy/2)&(X_u>L-D)&(X_u<L)] = u[(Y_u==D+L-dy/2)&(X_u>L-D)&(X_u<L)]
 
     p[(Y_p==D+L+dy/2)&(X_p>L-D)&(X_p<L)] = -p[(Y_p==D+L-dy/2)&(X_p>L-D)&(X_p<L)]
