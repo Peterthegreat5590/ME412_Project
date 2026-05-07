@@ -27,7 +27,7 @@ D = 1 #Witdh of channel
 H = L+D
 W = L
 Vin = 50
-Re=200
+Re=50
 nu = Vin*D/Re
 
 

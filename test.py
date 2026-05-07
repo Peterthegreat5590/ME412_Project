@@ -11,11 +11,11 @@ X_v = np.loadtxt("X_v.csv", float, delimiter=',')
 Y_v = np.loadtxt("Y_v.csv", float, delimiter=',')
 
 
-t = 0.1
+t = 0.400
 
-u = np.loadtxt(f"u_Time={t}.csv", float, delimiter=',')
-v = np.loadtxt(f"v_Time={t}.csv", float, delimiter=',')
-p = np.loadtxt(f"p_Time={t}.csv", float, delimiter=',')
+u = np.loadtxt(f"u_Time={t:.3f}.csv", float, delimiter=',')
+v = np.loadtxt(f"v_Time={t:.3f}.csv", float, delimiter=',')
+p = np.loadtxt(f"p_Time={t:.3f}.csv", float, delimiter=',')
 
 
 fig, axes = plt.subplots(1, 1, figsize=(14, 6))
