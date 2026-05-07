@@ -10,7 +10,7 @@ X_v = np.loadtxt("X_v.csv",float,delimiter=',')
 Y_v = np.loadtxt("Y_v.csv",float,delimiter=',')
 
 
-t = 9.0
+t = 0.8
 
 u = np.loadtxt(f"u_Time={t}.csv",float,delimiter=',')
 v = np.loadtxt(f"v_Time={t}.csv",float,delimiter=',')

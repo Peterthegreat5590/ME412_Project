@@ -9,10 +9,10 @@ inputs = sys.argv
 if len(inputs)>4:
     raise ValueError("Invalid input")
 elif len(inputs)<4:
-    dx = 1/16
-    dy = 1/16
+    dx = 1/8
+    dy = 1/8
     dt = 1/1000
-    t_max = 10
+    t_max = 5
 elif "/" in sys.argv:
     dx = float(eval(sys.argv[1]))
     dy = dx
@@ -26,6 +26,9 @@ D = 1 #Witdh of channel
 
 H = L+D
 W = L
+Vin = 50
+Re=200
+nu = Vin*D/Re
 
 
 x_p = np.arange(-dx, W+dx*3/2, dx) + dx/2
@@ -56,9 +59,6 @@ domain_u[((X_u>D)&(X_u<(W-D))&(Y_u>D))|(X_u>W+dx)] = False
 domain_v = np.ones([Ny+2, Nx+2],bool)
 domain_v[((X_v>D)&(X_v<(W-D))&(Y_v>D))|(Y_v>H+dy)] = False
 
-Vin = 50
-
-nu = 1
 
 time = np.arange(0,t_max,dt)
 

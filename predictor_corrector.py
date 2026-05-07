@@ -2,7 +2,6 @@
 import numpy as np
 from sor_solve import sor_solve
 from enforce_boundary import enforce_boundary
-from SOR_solve_copy import SORitersolve
 
 
 def solve(u, v, p, u_mask, v_mask, p_mask, dt, dx, dy, nu, X_p, Y_p, X_u, Y_u, X_v, Y_v, L, D, Vin, time):
@@ -71,12 +70,14 @@ def solve(u, v, p, u_mask, v_mask, p_mask, dt, dx, dy, nu, X_p, Y_p, X_u, Y_u, X
 
 
 
-        u_star[1:-1,1:-1] = (a_uE*uE + a_uW*uW + a_uN*uN + a_uS*uS)/a_uP
-        v_star[1:-1,1:-1] = (a_vE*vE + a_vW*vW + a_vN*vN + a_vS*vS)/a_vP
+        #u_star[1:-1,1:-1] = (a_uE*uE + a_uW*uW + a_uN*uN + a_uS*uS)/a_uP
+        u_star[1:-1,1:-1] = uP + (dt/(dx*dy)) * (a_uE*uE + a_uW*uW + a_uN*uN + a_uS*uS - a_uP*uP)
+        #v_star[1:-1,1:-1] = (a_vE*vE + a_vW*vW + a_vN*vN + a_vS*vS)/a_vP
+        v_star[1:-1,1:-1] = vP + (dt/(dx*dy)) * (a_vE*vE + a_vW*vW + a_vN*vN + a_vS*vS - a_vP*vP)
 
         u_star, v_star, _ = enforce_boundary(u_star, v_star, p, u_mask, v_mask, p_mask, X_p, Y_p, X_u, Y_u, X_v, Y_v, L, D, Vin)
 
-        p = sor_solve(u_star, v_star, p, dx, dy, dt, X_p, Y_p, L, D)
+        p = sor_solve(u_star, v_star, p, dx, dy, dt, X_p, Y_p, L, D, p_mask)
 
         u_new = u_star.copy()
         u_new[1:-1,1:-1] = u_star[1:-1,1:-1] - dt*(p[1:-1,2:]-p[1:-1,1:-1])/dx
@@ -99,7 +100,7 @@ def solve(u, v, p, u_mask, v_mask, p_mask, dt, dx, dy, nu, X_p, Y_p, X_u, Y_u, X
             np.savetxt(f"v_Time={t}.csv", v, '%0.5f', ',','\n')
             np.savetxt(f"p_Time={t}.csv", p, '%0.5f', ',','\n')
         
-        if t%(dt*100)<dt/2:
+        if t%(dt*10)<dt/2:
             print(f"Time={t}")
 
     np.savetxt(f"u_Time={t}.csv", u, '%0.5f', ',','\n')
