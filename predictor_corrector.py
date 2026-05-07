@@ -2,6 +2,7 @@
 import numpy as np
 from sor_solve import sor_solve
 from enforce_boundary import enforce_boundary
+from pathlib import Path
 
 
 def solve(u, v, p, u_mask, v_mask, p_mask, dt, dx, dy, nu, X_p, Y_p, X_u, Y_u, X_v, Y_v, L, D, Vin, time):
@@ -70,9 +71,9 @@ def solve(u, v, p, u_mask, v_mask, p_mask, dt, dx, dy, nu, X_p, Y_p, X_u, Y_u, X
 
 
 
-        #u_star[1:-1,1:-1] = (a_uE*uE + a_uW*uW + a_uN*uN + a_uS*uS)/a_uP
+        
         u_star[1:-1,1:-1] = uP + (dt/(dx*dy)) * (a_uE*uE + a_uW*uW + a_uN*uN + a_uS*uS - a_uP*uP)
-        #v_star[1:-1,1:-1] = (a_vE*vE + a_vW*vW + a_vN*vN + a_vS*vS)/a_vP
+        
         v_star[1:-1,1:-1] = vP + (dt/(dx*dy)) * (a_vE*vE + a_vW*vW + a_vN*vN + a_vS*vS - a_vP*vP)
 
         u_star, v_star, _ = enforce_boundary(u_star, v_star, p, u_mask, v_mask, p_mask, X_p, Y_p, X_u, Y_u, X_v, Y_v, L, D, Vin)
@@ -96,15 +97,15 @@ def solve(u, v, p, u_mask, v_mask, p_mask, dt, dx, dy, nu, X_p, Y_p, X_u, Y_u, X
         
 
         if (t%(1000*dt)<dt/2)|(t%(1000*dt)>(1000*dt-dt/2)):
-            np.savetxt(f"u_Time={t:.3f}.csv", u, '%0.5f', ',','\n')
-            np.savetxt(f"v_Time={t:.3f}.csv", v, '%0.5f', ',','\n')
-            np.savetxt(f"p_Time={t:.3f}.csv", p, '%0.5f', ',','\n')
+            np.savetxt(Path(f"CSV/u_Time={t:.3f}.csv"), u, '%0.5f', ',','\n')
+            np.savetxt(Path(f"CSV/v_Time={t:.3f}.csv"), v, '%0.5f', ',','\n')
+            np.savetxt(Path(f"CSV/p_Time={t:.3f}.csv"), p, '%0.5f', ',','\n')
         
-        if t%(dt*10)<dt/2|(t%(10*dt)>(10*dt-dt/2)):
+        if (t%(dt*10)<dt/2)|(t%(10*dt)>(10*dt-dt/2)):
             print(f"Time={t}")
 
-    np.savetxt(f"u_Time={t}.csv", u, '%0.5f', ',','\n')
-    np.savetxt(f"v_Time={t}.csv", v, '%0.5f', ',','\n')
-    np.savetxt(f"p_Time={t}.csv", p, '%0.5f', ',','\n')
+    np.savetxt(Path(f"CSV/u_Time={t}.csv"), u, '%0.5f', ',','\n')
+    np.savetxt(Path(f"CSV/v_Time={t}.csv"), v, '%0.5f', ',','\n')
+    np.savetxt(Path(f"CSV/p_Time={t}.csv"), p, '%0.5f', ',','\n')
 
 

@@ -1,20 +1,21 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from pathlib import Path
 
 
-X_p = np.loadtxt("X_p.csv",float,delimiter=',')
-Y_p = np.loadtxt("Y_p.csv",float,delimiter=',')
-X_u = np.loadtxt("X_u.csv",float,delimiter=',')
-Y_u = np.loadtxt("Y_u.csv",float,delimiter=',')
-X_v = np.loadtxt("X_v.csv",float,delimiter=',')
-Y_v = np.loadtxt("Y_v.csv",float,delimiter=',')
+X_p = np.loadtxt(Path("CSV/X_p.csv"),float,delimiter=',')
+Y_p = np.loadtxt(Path("CSV/Y_p.csv"),float,delimiter=',')
+X_u = np.loadtxt(Path("CSV/X_u.csv"),float,delimiter=',')
+Y_u = np.loadtxt(Path("CSV/Y_u.csv"),float,delimiter=',')
+X_v = np.loadtxt(Path("CSV/X_v.csv"),float,delimiter=',')
+Y_v = np.loadtxt(Path("CSV/Y_v.csv"),float,delimiter=',')
 
 
 t = 0.1
 
-u = np.loadtxt(f"u_Time={t}.csv",float,delimiter=',')
-v = np.loadtxt(f"v_Time={t}.csv",float,delimiter=',')
-p = np.loadtxt(f"p_Time={t}.csv",float,delimiter=',')
+u = np.loadtxt(Path(f"CSV/u_Time={t}.csv"),float,delimiter=',')
+v = np.loadtxt(Path(f"CSV/v_Time={t}.csv"),float,delimiter=',')
+p = np.loadtxt(Path(f"CSV/p_Time={t}.csv"),float,delimiter=',')
 
 
 p_mask = np.zeros_like(p, dtype=bool)
