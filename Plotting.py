@@ -11,11 +11,11 @@ X_v = np.loadtxt(Path("CSV/X_v.csv"),float,delimiter=',')
 Y_v = np.loadtxt(Path("CSV/Y_v.csv"),float,delimiter=',')
 
 
-t = 0.1
+t = 20
 
-u = np.loadtxt(Path(f"CSV/u_Time={t}.csv"),float,delimiter=',')
-v = np.loadtxt(Path(f"CSV/v_Time={t}.csv"),float,delimiter=',')
-p = np.loadtxt(Path(f"CSV/p_Time={t}.csv"),float,delimiter=',')
+u = np.loadtxt(Path(f"CSV/u_Time={t:.3f}.csv"),float,delimiter=',')
+v = np.loadtxt(Path(f"CSV/v_Time={t:.3f}.csv"),float,delimiter=',')
+p = np.loadtxt(Path(f"CSV/p_Time={t:.3f}.csv"),float,delimiter=',')
 
 
 p_mask = np.zeros_like(p, dtype=bool)
@@ -49,7 +49,7 @@ x_vf, y_vf = x_vf[(x_vf>0)&(x_vf<5)&(y_vf>0)&(y_vf<6)], y_vf[(x_vf>0)&(x_vf<5)&(
 v_f = v_f[(x_vf<1)|(x_vf>4)|(y_vf<1)]
 x_vf, y_vf = x_vf[(x_vf<1)|(x_vf>4)|(y_vf<1)], y_vf[(x_vf<1)|(x_vf>4)|(y_vf<1)]
 
-plt.quiver(x_uf, y_uf, u_f, v_f, scale=300)
+plt.quiver(x_uf, y_uf, u_f, v_f, scale=6)
 
 plt.xlim([0,5])
 plt.ylim([0,6])
@@ -58,7 +58,17 @@ ax = plt.gca()
 
 ax.set_aspect('equal', adjustable='box')
 
+dx = X_p[0,1] - X_p[0,0]
+dy = Y_p[1,0] - Y_p[0,0]
+p_in = p[(X_p==(1/2)+dx/2)&(Y_p==(6-dy/2))]
+p_out = p[(X_p==(9/2)+dx/2)&(Y_p==(6-dy/2))]
+print(p_in-p_out)
+
+velo = np.sqrt(u**2+v**2)
+print(np.max(velo))
+
 plt.show()
+
 
 # plt.contourf(X_p_masked,Y_p_masked,p_masked,cmap = "jet", corner_mask = False)
 
