@@ -4,7 +4,7 @@ from enforce_boundary import pressure_boundary
 
 @jit
 def sor_solve(u, v, p, dx, dy, dt, X_p, Y_p, L, D, p_mask):
-    omega = 1.7
+    omega = 1.8
     b = dx/dt*(u[1:-1,1:-1]-u[1:-1,:-2]+v[1:-1,1:-1]-v[:-2,1:-1])
     converged = False
     tolerance = 1e-5

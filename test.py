@@ -12,7 +12,7 @@ X_v = np.loadtxt(Path("CSV/X_v.csv"),float,delimiter=',')
 Y_v = np.loadtxt(Path("CSV/Y_v.csv"),float,delimiter=',')
 
 
-t = 0.400
+t = 20
 
 u = np.loadtxt(Path(f"CSV/u_Time={t:.3f}.csv"),float,delimiter=',')
 v = np.loadtxt(Path(f"CSV/v_Time={t:.3f}.csv"),float,delimiter=',')

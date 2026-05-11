@@ -61,13 +61,13 @@ def solve(u, v, p, u_mask, v_mask, p_mask, dt, dx, dy, nu, X_p, Y_p, X_u, Y_u, X
         a_uW[Re_u<=2] = nu + uw[Re_u<=2]*dy/2
         a_uN[Re_u<=2] = nu - vn_u[Re_u<=2]*dx/2
         a_uS[Re_u<=2] = nu + vs_u[Re_u<=2]*dx/2
-        a_uP[Re_u<=2] = a_uE[Re_u<=2] + a_uW[Re_u<=2] + a_uN[Re_u<=2] + a_uS[Re_u<=2] + (ue[Re_u<=2]*dy - uw[Re_u<=2]*dy)/2 + (vn_u[Re_u<=2]*dx - vs_u[Re_u<=2]*dx)/2
+        a_uP[Re_u<=2] = a_uE[Re_u<=2] + a_uW[Re_u<=2] + a_uN[Re_u<=2] + a_uS[Re_u<=2] + (ue[Re_u<=2]*dy - uw[Re_u<=2]*dy) + (vn_u[Re_u<=2]*dx - vs_u[Re_u<=2]*dx)
 
         a_vE[Re_v<=2] = nu - ue_v[Re_v<=2]*dy/2
         a_vW[Re_v<=2] = nu + uw_v[Re_v<=2]*dy/2
         a_vN[Re_v<=2] = nu - vn[Re_v<=2]*dx/2
         a_vS[Re_v<=2] = nu + vs[Re_v<=2]*dx/2
-        a_vP[Re_v<=2] = a_vE[Re_v<=2] + a_vW[Re_v<=2] + a_vN[Re_v<=2] + a_vS[Re_v<=2] + (ue_v[Re_v<=2]*dy - uw_v[Re_v<=2]*dy)/2 + (vn[Re_v<=2]*dx - vs[Re_v<=2]*dx)/2
+        a_vP[Re_v<=2] = a_vE[Re_v<=2] + a_vW[Re_v<=2] + a_vN[Re_v<=2] + a_vS[Re_v<=2] + (ue_v[Re_v<=2]*dy - uw_v[Re_v<=2]*dy) + (vn[Re_v<=2]*dx - vs[Re_v<=2]*dx)
 
 
 
@@ -96,7 +96,7 @@ def solve(u, v, p, u_mask, v_mask, p_mask, dt, dx, dy, nu, X_p, Y_p, X_u, Y_u, X
 
         
 
-        if (t%(1000*dt)<dt/2)|(t%(1000*dt)>(1000*dt-dt/2)):
+        if (t%(100*dt)<dt/2)|(t%(100*dt)>(100*dt-dt/2)):
             np.savetxt(Path(f"CSV/u_Time={t:.3f}.csv"), u, '%0.5f', ',','\n')
             np.savetxt(Path(f"CSV/v_Time={t:.3f}.csv"), v, '%0.5f', ',','\n')
             np.savetxt(Path(f"CSV/p_Time={t:.3f}.csv"), p, '%0.5f', ',','\n')
@@ -104,8 +104,8 @@ def solve(u, v, p, u_mask, v_mask, p_mask, dt, dx, dy, nu, X_p, Y_p, X_u, Y_u, X
         if (t%(dt*10)<dt/2)|(t%(10*dt)>(10*dt-dt/2)):
             print(f"Time={t}")
 
-    np.savetxt(Path(f"CSV/u_Time={t}.csv"), u, '%0.5f', ',','\n')
-    np.savetxt(Path(f"CSV/v_Time={t}.csv"), v, '%0.5f', ',','\n')
-    np.savetxt(Path(f"CSV/p_Time={t}.csv"), p, '%0.5f', ',','\n')
+    np.savetxt(Path(f"CSV/u_Time={t:.3f}.csv"), u, '%0.5f', ',','\n')
+    np.savetxt(Path(f"CSV/v_Time={t:.3f}.csv"), v, '%0.5f', ',','\n')
+    np.savetxt(Path(f"CSV/p_Time={t:.3f}.csv"), p, '%0.5f', ',','\n')
 
 

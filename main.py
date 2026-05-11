@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 from enforce_boundary import enforce_boundary
 from predictor_corrector import solve
 from pathlib import Path
+import os
+import shutil
 
 inputs = sys.argv
 
@@ -14,7 +16,7 @@ elif len(inputs)<4:
     dy = 1/16
     dt = 1/10000
     t_max = 5
-elif "/" in sys.argv:
+elif "/" in sys.argv[1]:
     dx = float(eval(sys.argv[1]))
     dy = dx
     dt = float(sys.argv[2])
@@ -22,15 +24,25 @@ elif "/" in sys.argv:
 else:
     raise ValueError("Invalid input")
 
+
+
+print(f"dx = {dx:.5f}, dy = {dy:.5f}, dt = {dt:.5f}, t_max = {t_max:.3f}")
+
 L = 5 #Length of channel
 D = 1 #Witdh of channel
 
 H = L+D
 W = L
-Vin = 50
+Vin = 1
 Re=50
 nu = Vin*D/Re
 
+dt_diff_max = dx*dy/(4*nu)
+
+dt_conv_max = dy/Vin
+
+if dt>min(dt_conv_max, dt_diff_max):
+    raise ValueError(f"Timestep dt too large! Maximum dt = {min(dt_conv_max, dt_diff_max):.5f}")
 
 x_p = np.arange(-dx, W+dx*3/2, dx) + dx/2
 y_p = np.arange(-dy, H+dy*3/2, dy) + dy/2
@@ -61,11 +73,15 @@ domain_v = np.ones([Ny+2, Nx+2],bool)
 domain_v[((X_v>D)&(X_v<(W-D))&(Y_v>D))|(Y_v>H+dy)] = False
 
 
-time = np.arange(0,t_max,dt)
+time = np.arange(0,t_max+dt/2,dt)
 
 u, v, p = enforce_boundary(u, v, p, domain_u, domain_v, domain_p, X_p, Y_p, X_u, Y_u, X_v, Y_v, L, D, Vin)
 
 np.set_printoptions(threshold=100000)
+
+shutil.rmtree("CSV")
+
+os.mkdir("CSV")
 
 np.savetxt(Path("CSV/X_p.csv"),X_p,'%0.5f',',','\n')
 np.savetxt(Path("CSV/Y_p.csv"),Y_p,'%0.5f',',','\n')
