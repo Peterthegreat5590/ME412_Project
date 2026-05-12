@@ -1,6 +1,5 @@
 import numpy as np
 import sys
-import matplotlib.pyplot as plt
 from enforce_boundary import enforce_boundary
 from predictor_corrector import solve
 from pathlib import Path
